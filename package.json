@@ -6,5 +6,8 @@
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.18.4"
+  },
+  "dependencies": {
+    "clinic": "^13.0.0"
   }
 }

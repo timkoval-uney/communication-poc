@@ -6,17 +6,18 @@ use std::{
 
 use napi::{
     AsyncWorkPromise, Env, JsFunction, JsObject, JsString, JsUnknown, Result, Status,
-    bindgen_prelude::AsyncTask,
+    bindgen_prelude::{AsyncTask, Promise},
     sys::{napi_callback_info__, napi_env__, napi_get_undefined, napi_value__},
     threadsafe_function::{
-        ErrorStrategy, ThreadSafeCallContext, ThreadsafeFunction, ThreadsafeFunctionCallMode,
+        ErrorStrategy::{self, CalleeHandled},
+        ThreadSafeCallContext, ThreadsafeFunction, ThreadsafeFunctionCallMode,
     },
 };
 use napi_derive::napi;
 
 #[napi]
 fn call_js_callback(callback: JsFunction) -> Result<()> {
-    callback.call::<JsString>(None, &[])?;
+    let res = callback.call::<JsString>(None, &[])?;
     Ok(())
 }
 
@@ -130,4 +131,10 @@ pub async fn create_promise() -> Result<String> {
     // Simulate some work with a sleep
     std::thread::sleep(std::time::Duration::from_millis(1000));
     Ok(String::from("Hello from Rust Promise!"))
+}
+
+#[napi]
+pub async fn async_promise(p: Promise<u32>) -> Result<u32> {
+    let v = p.await?;
+    Ok(v + 100)
 }

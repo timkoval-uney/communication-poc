@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 napi = { version = "2.16", features = ["napi4", "tokio_rt"] }
 napi-derive = "2.16"
+neon = { version = "1.0.0" }
 
 [build-dependencies]
 napi-build = "2.1.3"
